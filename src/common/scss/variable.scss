@@ -1,0 +1,42 @@
+// 颜色定义规范
+
+// 主题
+$color-theme-1 : #0098ff;
+$color-theme-2 : rgba(0,152,255,1) rgba(0,0,0,0.15); // 主题黑透明
+$color-theme-3 : rgba(0,152,255,1) rgba(255,255,255,0.5); // 主题白透明
+$color-theme-4 : linear-gradient(90deg,rgba(31,192,254,1) 0%,rgba(2,140,255,1) 100%); //主题渐变背景
+
+//副主题
+$color-sub-theme-1 : #FDA300;
+$color-sub-theme-2 : #FF462D;
+$color-sub-theme-3 : #0CCE8F;
+
+//辅助颜色
+$color-sub-1 : rgba(0,152,255,1);
+$color-sub-2 : rgba(12,206,143,1);
+$color-sub-3 : rgba(253,163,0,1);
+$color-sub-4 : rgba(255,70,45,1);
+$color-sub-5 : rgba(248,248,248,1);
+
+//字体颜色
+$color-text-1 : #333; // 一级默认
+$color-text-2 : #666; // 二级
+$color-text-3 : #999; // 三级
+$color-text-4 : #BDBDBD; // 四级
+
+//其他
+$page-background : #F8F8F8; //界面通用背景颜色
+$nav-line : #DDDDDD; // 导航分割线
+$list-line : #E6E6E6; // 列表分割线
+$toast-background : rgba(0,0,0,0.7); // toast背景
+$modal-background : rgba(0,0,0,1); // modal背景
+
+//字体定义规范(ui暂无规范定义)
+$font-size-small-s : 10px;
+$font-size-small : 12px;
+$font-size-medium : 14px;
+$font-size-medium-x : 16px;
+$font-size-large : 18px;
+$font-size-large-l : 20px;
+$font-size-large-x : 22px;
+$font-size-large-m : 24px;

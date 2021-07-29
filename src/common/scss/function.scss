@@ -1,0 +1,33 @@
+// 设置超出行数隐藏
+@mixin lineHide($line){
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:$line;
+}
+
+
+// 字体大小（以二倍为基本）
+@mixin fontSize($px) {
+  font-size: #{$px/2}px;
+  @meida (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3) {
+    font-size: #{$px}px;
+  }
+  @meida (-webkit-min-device-pixel-ratio: 1),(min-device-pixel-ratio: 1) {
+    font-size: #{$px}px;
+  }
+}
+
+$baseWidth: 750; // 设计搞基础宽度
+// 自动算出vw值
+@function vw($px) {
+  @return $baseWidth / 100 * $px;
+}
+
+// px转rem
+@function px2em($px) {
+  @return $px/100;
+}
+
+//

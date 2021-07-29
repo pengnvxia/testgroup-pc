@@ -1,0 +1,18 @@
+@import "variable";
+
+body, html{
+  line-height: 1;
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback';
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  //background: $page-background ;
+  color: $color-text-1;
+}
+a{
+  color:$color-text-1;
+}
+
+.van-notify, .van-toast{
+  font-size: 0.26rem;
+  background-color: $toast-background;
+}
