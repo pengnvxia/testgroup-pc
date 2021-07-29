@@ -32,7 +32,7 @@ module.exports = {
         }
     },
     chainWebpack: config => {
-        // see TerserPlugin compress options document: 
+        // see TerserPlugin compress options document:
         // https://github.com/terser/terser#compress-options
         if (process.env.NODE_ENV === 'production') {
             config.optimization.minimizer('terser').tap((args) => {
@@ -52,5 +52,14 @@ module.exports = {
         config.module.rule('vue').use('thread-loader').loader('thread-loader').options({
             workers: workers
         }).after('cache-loader');
+        // 为ant-design修改less-loader配置
+        config.module.rule('less').oneOf('normal').use('less-loader').options({
+            sourceMap: false,
+            javascriptEnabled: true
+        });
+        config.module.rule('less').oneOf('normal-modules').use('less-loader').options({
+            sourceMap: false,
+            javascriptEnabled: true
+        });
     }
 }

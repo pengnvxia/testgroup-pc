@@ -1,14 +1,20 @@
+
 import Vue, { CreateElement, VNode } from 'vue';
 import App from './App.vue';
 import router from '@/router/index';
 import store from '@/store/index';
+import '@/common/ts/config/antDesign';
+
+import '@/common/scss/index.scss';
+
+
 
 // 全局组件
 import '@/components/index';
 
 Vue.config.productionTip = false;
 
-import '@/common/scss/reset.scss';
+// import '@/common/scss/reset.scss';
 
 // 配置全局错误捕获
 Vue.config.errorHandler = (err: Error, vm: Vue, info: string): void => {
@@ -24,3 +30,5 @@ new Vue({
   store,
   render: (h: CreateElement): VNode => h(App)
 }).$mount('#app');
+
+
