@@ -3,12 +3,13 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 // devServer配置查看 https://cli.vuejs.org/config/#devserver
 const devServer = {
     host: '0.0.0.0',
-    // proxy: {
-    //     '/': {
-    //         target: '',
-    //         changeOrigin: true
-    //     }
-    // }
+    proxy: {
+        '^/testgroup': {
+            // target: 'http://127.0.0.1:8080',
+            target: 'http://10.0.10.4:8081',
+            changeOrigin: true
+        }
+    }
 }
 
 let workers = require('os').cpus().length;

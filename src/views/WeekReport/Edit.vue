@@ -1,7 +1,7 @@
 <template>
     <a-form-model>
         <div class="dateInput">
-            <a-range-picker @change="onChange" />
+            <a-range-picker @change="onChange" :value="[toDate(weekReportForm.startTime), toDate(weekReportForm.endTime)]"/>
         </div>
         <div class="reportContent">
             <a-collapse defaultActiveKey="thisWeek">
@@ -44,8 +44,8 @@
                             </a-form-model-item>
                         </template>
                         <template slot="operation" slot-scope="text,record,index">
-                                <a-icon type="minus" @click="handleDeleteNext(index)" v-if="record.priority!=1"/>
-                                <a-icon type="plus" @click="handleAddNext(index)"/>
+                            <a-icon type="minus" @click="handleDeleteNext(index)" v-if="record.priority!=1"/>
+                            <a-icon type="plus" @click="handleAddNext(index)"/>
                         </template>
                     </a-table>
                 </a-collapse-panel>
@@ -60,7 +60,8 @@
 </template>
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    import { addHeader,add } from '@/services/weekReport/index';
+    import { addHeader,reportDetail,editReport } from '@/services/weekReport/index';
+    import moment from 'moment';
 
     interface Report {
         priority: number,
@@ -73,11 +74,11 @@
         components: {
         }
     })
-    export default class Add extends Vue {
+    export default class Edit extends Vue {
 
         private weekReportForm: any={
-            startTime: String,
-            endTime: String,
+            startTime: '',
+            endTime: '',
             thisWeek: [
                 {
 
@@ -101,7 +102,6 @@
             {
                 title: '编号',
                 dataIndex: 'priority',
-                width: '5%',
                 scopedSlots: { customRender: 'priority' },
             },
             {
@@ -128,6 +128,24 @@
 
         private mounted(): void {
             addHeader(this.$route.query.userId as string);
+            this.getDetail(this.$route.params.id)
+        }
+
+        private toDate(dateString: string): any {
+            return moment(dateString).format('YYYY-MM-DD');
+        }
+
+        private getDetail(id: string): void {
+            reportDetail(id).then(
+                (result: any) => {
+                    if (result.errcode === "0") {
+                        this.weekReportForm=result.retval;
+                    }
+                },
+                (err: any) => {
+                    this.$message;
+                }
+            )
         }
 
         private rowKey(record: any): number {
@@ -190,11 +208,11 @@
         }
 
         private handleSubmit(): void {
-            add(this.weekReportForm).then(
+            editReport(this.$route.params.id,this.weekReportForm).then(
                 (result: any) => {
                     if (result.errcode === "0") {
+                        this.$message.success("提交成功");
                         this.$router.go(-1);
-                        this.$message.success("提交成功")
                     }
                 },
                 (err: any) => {
