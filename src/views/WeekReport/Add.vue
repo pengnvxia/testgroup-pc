@@ -1,5 +1,5 @@
 <template>
-    <a-form-model :rules="ruleForm" :model="weekReportForm" ref="weekReportForm">
+    <a-form-model :rules="ruleForm" :model="weekReportForm" ref="refForm">
         <div class="dateInput">
             <a-form-model-item prop="startEndTime" label="日期范围">
                 <a-range-picker
@@ -138,14 +138,24 @@
         ]
 
         private ruleForm:any ={
-            dateInput: [
+            startEndTime: [
                 {
                     type: 'array',
                     required: true,
-                    message: '请选择日期',
+                    // message: '请选择日期',
                     trigger: 'change',
+                    validator: this.validateDateInput
                 },
             ]
+        }
+
+        private validateDateInput(rule: any,value: any,callback: (msg?: any) => void) {
+            if(value.length<=0){
+                callback('请选择日期');
+                return;
+            }else {
+                callback();
+            }
         }
 
         private mounted(): void {
@@ -207,13 +217,11 @@
         }
 
         private onChange(date: any, dateString: any){
-            console.log(this.weekReportForm.startEndTime);
             this.weekReportForm.startTime = dateString[0];
             this.weekReportForm.endTime = dateString[1];
         }
 
         private toDate(dateString: string): any {
-            console.log(dateString,1111)
             if(dateString.length<=0){
                 return null
             }else {
@@ -224,35 +232,35 @@
 
         private handleSubmit(): void {
 
-            add(this.weekReportForm).then(
-                (result: any) => {
-                    if (result.errcode === "0") {
-                        this.$router.go(-1);
-                        this.$message.success("提交成功")
-                    }
-                },
-                (err: any) => {
-                    this.$message;
-                }
-            );
-            // const ref: any = this.$refs.refForm;
-            // ref.validate((valid: boolean) => {
-            //     if (valid) {
-            //         add(this.weekReportForm).then(
-            //             (result: any) => {
-            //                 if (result.errcode === "0") {
-            //                     this.$router.go(-1);
-            //                     this.$message.success("提交成功")
-            //                 }
-            //             },
-            //             (err: any) => {
-            //                 this.$message;
-            //             }
-            //         );
-            //     }else {
-            //         return false;
+            // add(this.weekReportForm).then(
+            //     (result: any) => {
+            //         if (result.errcode === "0") {
+            //             this.$router.go(-1);
+            //             this.$message.success("提交成功")
+            //         }
+            //     },
+            //     (err: any) => {
+            //         this.$message;
             //     }
-            //     });
+            // );
+            const ref: any = this.$refs.refForm;
+            ref.validate((valid: boolean) => {
+                if (valid) {
+                    add(this.weekReportForm).then(
+                        (result: any) => {
+                            if (result.errcode === "0") {
+                                this.$router.go(-1);
+                                this.$message.success("提交成功")
+                            }
+                        },
+                        (err: any) => {
+                            this.$message;
+                        }
+                    );
+                }else {
+                    return false;
+                }
+                });
 
 
         }
@@ -270,6 +278,9 @@
     .dateInput {
         margin-top: 50px;
         margin-bottom: 20px;
+        /deep/ .ant-col {
+            display: inline-block;
+        }
     }
     .ant-form {
         .btn {
