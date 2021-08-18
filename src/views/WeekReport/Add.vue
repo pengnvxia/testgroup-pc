@@ -1,16 +1,16 @@
 <template>
-    <a-form-model :rules="ruleForm" ref="refForm">
+    <a-form-model :rules="ruleForm" :model="weekReportForm" ref="weekReportForm">
         <div class="dateInput">
-            <a-form-model-item prop="dateInput" label="日期范围">
+            <a-form-model-item prop="startEndTime" label="日期范围">
                 <a-range-picker
                         @change="onChange"
                         format="YYYY-MM-DD"
                         value-format="YYYY-MM-DD"
                         v-model="weekReportForm.startEndTime"
-
                 />
             </a-form-model-item>
         </div>
+
         <div class="reportContent">
             <a-collapse defaultActiveKey="thisWeek">
                 <a-collapse-panel header="本周工作内容" key="thisWeek">
@@ -67,7 +67,7 @@
 
 </template>
 <script lang="ts">
-    import { Component, Vue, Prop } from 'vue-property-decorator';
+    import { Component, Vue } from 'vue-property-decorator';
     import { addHeader,add } from '@/services/weekReport/index';
     import moment from 'moment';
 
@@ -208,8 +208,8 @@
 
         private onChange(date: any, dateString: any){
             console.log(this.weekReportForm.startEndTime);
-            this.weekReportForm.startTime= dateString[0];
-            this.weekReportForm.endTime= dateString[1];
+            this.weekReportForm.startTime = dateString[0];
+            this.weekReportForm.endTime = dateString[1];
         }
 
         private toDate(dateString: string): any {
