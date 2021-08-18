@@ -5,8 +5,8 @@ const devServer = {
     host: '0.0.0.0',
     proxy: {
         '^/testgroup': {
-            // target: 'http://127.0.0.1:8081',
-            target: 'http://10.0.10.5:8081',
+            target: 'http://127.0.0.1:8081',
+            // target: 'http://10.0.10.5:8081',
             changeOrigin: true
         }
     }

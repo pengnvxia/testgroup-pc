@@ -1,7 +1,15 @@
 <template>
-    <a-form-model>
+    <a-form-model :rules="ruleForm" ref="refForm">
         <div class="dateInput">
-            <a-range-picker @change="onChange" />
+            <a-form-model-item prop="dateInput" label="日期范围">
+                <a-range-picker
+                        @change="onChange"
+                        format="YYYY-MM-DD"
+                        value-format="YYYY-MM-DD"
+                        v-model="weekReportForm.startEndTime"
+
+                />
+            </a-form-model-item>
         </div>
         <div class="reportContent">
             <a-collapse defaultActiveKey="thisWeek">
@@ -59,8 +67,10 @@
 
 </template>
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
+    import { Component, Vue, Prop } from 'vue-property-decorator';
     import { addHeader,add } from '@/services/weekReport/index';
+    import moment from 'moment';
+
 
     interface Report {
         priority: number,
@@ -76,8 +86,9 @@
     export default class Add extends Vue {
 
         private weekReportForm: any={
-            startTime: String,
-            endTime: String,
+            startEndTime:[],
+            startTime: '',
+            endTime: '',
             thisWeek: [
                 {
 
@@ -125,6 +136,17 @@
                 scopedSlots: { customRender: 'operation' }
             }
         ]
+
+        private ruleForm:any ={
+            dateInput: [
+                {
+                    type: 'array',
+                    required: true,
+                    message: '请选择日期',
+                    trigger: 'change',
+                },
+            ]
+        }
 
         private mounted(): void {
             addHeader(this.$route.query.userId as string);
@@ -185,11 +207,23 @@
         }
 
         private onChange(date: any, dateString: any){
+            console.log(this.weekReportForm.startEndTime);
             this.weekReportForm.startTime= dateString[0];
             this.weekReportForm.endTime= dateString[1];
         }
 
+        private toDate(dateString: string): any {
+            console.log(dateString,1111)
+            if(dateString.length<=0){
+                return null
+            }else {
+                console.log(dateString,222)
+                return moment(dateString).format('YYYY-MM-DD');
+            }
+        }
+
         private handleSubmit(): void {
+
             add(this.weekReportForm).then(
                 (result: any) => {
                     if (result.errcode === "0") {
@@ -201,12 +235,33 @@
                     this.$message;
                 }
             );
+            // const ref: any = this.$refs.refForm;
+            // ref.validate((valid: boolean) => {
+            //     if (valid) {
+            //         add(this.weekReportForm).then(
+            //             (result: any) => {
+            //                 if (result.errcode === "0") {
+            //                     this.$router.go(-1);
+            //                     this.$message.success("提交成功")
+            //                 }
+            //             },
+            //             (err: any) => {
+            //                 this.$message;
+            //             }
+            //         );
+            //     }else {
+            //         return false;
+            //     }
+            //     });
+
 
         }
 
         private handleCancel(): void {
             this.$router.go(-1);
         }
+
+
 
     }
 </script>
