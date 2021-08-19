@@ -221,28 +221,15 @@
             this.weekReportForm.endTime = dateString[1];
         }
 
-        private toDate(dateString: string): any {
-            if(dateString.length<=0){
-                return null
-            }else {
-                console.log(dateString,222)
-                return moment(dateString).format('YYYY-MM-DD');
-            }
-        }
+        // private toDate(dateString: string): any {
+        //     if(dateString.length<=0){
+        //         return null
+        //     }else {
+        //         return moment(dateString).format('YYYY-MM-DD');
+        //     }
+        // }
 
         private handleSubmit(): void {
-
-            // add(this.weekReportForm).then(
-            //     (result: any) => {
-            //         if (result.errcode === "0") {
-            //             this.$router.go(-1);
-            //             this.$message.success("提交成功")
-            //         }
-            //     },
-            //     (err: any) => {
-            //         this.$message;
-            //     }
-            // );
             const ref: any = this.$refs.refForm;
             ref.validate((valid: boolean) => {
                 if (valid) {
@@ -280,6 +267,7 @@
         margin-bottom: 20px;
         /deep/ .ant-col {
             display: inline-block;
+            float: left;
         }
     }
     .ant-form {

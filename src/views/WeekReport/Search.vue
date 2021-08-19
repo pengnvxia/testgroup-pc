@@ -173,7 +173,6 @@
         }
 
         private handlePageChange(pagination: Pagination): void{
-            console.log(pagination,2222222);
             this.paginationConf.current = pagination;
             // if (this.pageSize !== pagination.pageSize) {
             //     this.paginationConf.current = 1;
@@ -185,7 +184,6 @@
         }
 
         private showSizeChange(current: number, pageSize: number): void {
-            console.log(pageSize);
             this.searchRequest.current=1;
             this.paginationConf.current = 1;
             this.searchRequest.size = pageSize;
@@ -238,7 +236,6 @@
         }
 
         private handleSearch(): void {
-            console.log(111)
             this.getSearch();
 
         }

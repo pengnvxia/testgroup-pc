@@ -1,7 +1,15 @@
 <template>
-    <a-form-model>
+    <a-form-model :rules="ruleForm" :model="weekReportForm" ref="refForm">
         <div class="dateInput">
-            <a-range-picker @change="onChange" :value="[toDate(weekReportForm.startTime), toDate(weekReportForm.endTime)]"/>
+            <a-form-model-item prop="startEndTime" label="日期范围">
+                <a-range-picker
+                        @change="onChange"
+                        format="YYYY-MM-DD"
+                        value-format="YYYY-MM-DD"
+                        v-model="weekReportForm.startEndTime"
+                />
+<!--                <a-range-picker @change="onChange" :value="[toDate(weekReportForm.startTime), toDate(weekReportForm.endTime)]"/>-->
+            </a-form-model-item>
         </div>
         <div class="reportContent">
             <a-collapse defaultActiveKey="thisWeek">
@@ -75,8 +83,8 @@
         }
     })
     export default class Edit extends Vue {
-
         private weekReportForm: any={
+            startEndTime:[],
             startTime: '',
             endTime: '',
             thisWeek: [
@@ -131,6 +139,27 @@
             this.getDetail(this.$route.params.id)
         }
 
+        private ruleForm:any ={
+            startEndTime: [
+                {
+                    type: 'array',
+                    required: true,
+                    // message: '请选择日期',
+                    trigger: 'change',
+                    validator: this.validateDateInput
+                },
+            ]
+        }
+
+        private validateDateInput(rule: any,value: any,callback: (msg?: any) => void) {
+            if(value.length<=0){
+                callback('请选择日期');
+                return;
+            }else {
+                callback();
+            }
+        }
+
         private toDate(dateString: string): any {
             return moment(dateString).format('YYYY-MM-DD');
         }
@@ -140,6 +169,7 @@
                 (result: any) => {
                     if (result.errcode === "0") {
                         this.weekReportForm=result.retval;
+                        Vue.set(this.weekReportForm,'startEndTime',[this.weekReportForm.startTime,this.weekReportForm.endTime]);
                     }
                 },
                 (err: any) => {
@@ -208,17 +238,26 @@
         }
 
         private handleSubmit(): void {
-            editReport(this.$route.params.id,this.weekReportForm).then(
-                (result: any) => {
-                    if (result.errcode === "0") {
-                        this.$message.success("提交成功");
-                        this.$router.go(-1);
-                    }
-                },
-                (err: any) => {
-                    this.$message;
+
+            const ref: any = this.$refs.refForm;
+            ref.validate((valid: boolean) => {
+                if (valid) {
+                    editReport(this.$route.params.id,this.weekReportForm).then(
+                        (result: any) => {
+                            if (result.errcode === "0") {
+                                this.$message.success("提交成功");
+                                this.$router.go(-1);
+                            }
+                        },
+                        (err: any) => {
+                            this.$message;
+                        }
+                    );
+                }else {
+                    return false;
                 }
-            );
+            });
+
 
         }
 
@@ -233,6 +272,10 @@
     .dateInput {
         margin-top: 50px;
         margin-bottom: 20px;
+        /deep/ .ant-col {
+            display: inline-block;
+            float: left;
+        }
     }
     .ant-form {
         .btn {
