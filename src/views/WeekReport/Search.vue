@@ -55,7 +55,7 @@
 <script lang="ts">
     import { Component, Vue, Prop } from 'vue-property-decorator';
     import { search,deleteReport } from '@/services/weekReport/index';
-    import { list } from '@/services/users/index';
+    import { list, getUserInfo } from '@/services/users/index';
     import { Pagination } from "ant-design-vue";
     import { addHeader } from '@/services/weekReport/index';
 
@@ -121,8 +121,23 @@
 
         private mounted(): void {
             addHeader(this.$route.query.userId as string);
+            this.saveUserInfo();
             this.getSearch();
             this.getUserList();
+        }
+
+        private saveUserInfo(): void {
+            getUserInfo().then(
+                (result: any) => {
+                    if (result.errcode === "0") {
+                        localStorage.setItem('uid',result.retval.id);
+                        localStorage.setItem('username',result.retval.username);
+                    }
+                },
+                (err: any) => {
+                    this.$message;
+                }
+            )
         }
 
         private startChange(date: any, dateString: any): void {

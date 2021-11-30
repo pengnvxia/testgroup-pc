@@ -9,3 +9,11 @@ export function list(): AxiosPromise {
     };
     return Base(config);
 }
+
+export function getUserInfo(): AxiosPromise {
+    const config: AxiosRequestConfig = {
+        url: `${PROJECTSERVER}/user/userInfo`,
+        method: 'get'
+    }
+    return Base(config);
+}
